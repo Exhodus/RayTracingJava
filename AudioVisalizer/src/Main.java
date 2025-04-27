@@ -15,10 +15,6 @@ public class Main {
         Board board = new Board(window);
         window.add(board);
 
-
-
         window.setVisible(true);
-
-
     }
 }

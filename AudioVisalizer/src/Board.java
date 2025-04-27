@@ -19,7 +19,7 @@ public class Board extends JPanel {
         add(foco);
 
         obj = new Objeto();
-        obj.setBounds(500, 500, 500, 250);
+        obj.setBounds(500, 250, 500, 250);
 
         System.out.println(obj.getY() + " " +(obj.getY()+obj.getHeight()));
 
@@ -30,36 +30,47 @@ public class Board extends JPanel {
         generarRayos(ventana , rayos);
 
 
+
     }
 
     private void generarRayos(JFrame ventana, ArrayList<Rayo> rayos) {
-        int centroX = foco.getX() + foco.getWidth() /2;
-        int centroY = foco.getY() + foco.getHeight() /2;
+        int centroX = foco.getX() + foco.getWidth() / 2;
+        int centroY = foco.getY() + foco.getHeight() / 2;
 
         int radio = Math.max(ventana.getWidth(), ventana.getHeight()); // Longitud máxima de los rayos
+
+        int objX = obj.getX();
+        int objY = obj.getY();
+        int objWidth = obj.getWidth();
+        int objHeight = obj.getHeight();
+
+        rayos.clear();
 
         for (double i = 0; i < 360; i++) {
             double angle = Math.toRadians(i);
             int finalX = (int) (centroX + radio * Math.cos(angle));
             int finalY = (int) (centroY + radio * Math.sin(angle));
-             ray = new Rayo(centroX, centroY, finalX, finalY);
 
-            if(finalY >= obj.getY() && finalY <= (obj.getY()+obj.getHeight())-1){
-                System.out.println(finalX + " " + finalY);
+            // Calcular intersección con los bordes del objeto
+            int intersectX = finalX;
+            int intersectY = finalY;
 
-               // Rayo ray = new Rayo(centroX, centroY, finalX, finalY);
-                System.out.println("he entrado");
-            } else {
-                Rayo ray = new Rayo(centroX, centroY, finalX, finalY);
-                rayos.add(ray);
+            if (finalX > objX && finalX < objX + objWidth && finalY > objY && finalY < objY + objHeight) {
+               if()
+
             }
-
+            if (intersectX >= objX && intersectX <= objX + objWidth &&
+                    intersectY >= objY && intersectY <= objY + objHeight) {
+               finalX = intersectX;
+               finalY = intersectY;
+            }
+            rayos.add(new Rayo(centroX, centroY, finalX, finalY));
         }
 
-
+        repaint();
     }
 
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent (Graphics g){
         super.paintComponent(g);
         g.setColor(Color.YELLOW);
 
@@ -69,18 +80,19 @@ public class Board extends JPanel {
         }
     }
 
-    private int calcularAlturaVentana(JFrame ventana,Foco foco) {
+    private int calcularAlturaVentana (JFrame ventana, Foco foco){
         int devuelta = 0;
         int finalFoco = foco.getX() + foco.getHeight();
-        devuelta = (ventana.getHeight()-1)- finalFoco ;
+        devuelta = (ventana.getHeight() - 1) - finalFoco;
         return devuelta;
     }
 
 
-    private int calcularFinalVentana(JFrame ventana, Foco foco) {
+    private int calcularFinalVentana (JFrame ventana, Foco foco){
         int devuelta = 0;
         int finalFoco = foco.getX() + foco.getWidth();
-        devuelta = (ventana.getWidth()-1)- finalFoco ;
+        devuelta = (ventana.getWidth() - 1) - finalFoco;
         return devuelta;
     }
 }
+
